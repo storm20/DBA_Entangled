@@ -1,24 +1,60 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from main import counterfactual_prob1, counterfactual_prob2
+# from main import counterfactual_prob1, counterfactual_prob2
 import pandas as pd
 
+import netsquid as ns
+
+def init_state_5():
+    basis_matrix = np.identity(32)
+    state = np.zeros((32,1))
+    for i in range(32):
+        if (i == 7) or (i== 24):
+            state = state + (1/np.sqrt(2))*basis_matrix[:,i].reshape((32,1))
+        # elif i == 14 or i==13 or i==11 or i==17 or i==18 or i==20 :
+        #     state = state - (1/(2*np.sqrt(3)))*basis_matrix[:,i].reshape((32,1))
+    return state
+
+def init_state():
+    basis_matrix = np.identity(16)
+    state = np.zeros((16,1))
+    for i in range(16):
+        if (i == 3) or (i== 12):
+            state = state + (1/np.sqrt(3))*basis_matrix[:,i].reshape((16,1))
+        elif i == 5 or i==6 or i==9 or i==10 or i==12 :
+            state = state - (1/(2*np.sqrt(3)))*basis_matrix[:,i].reshape((16,1))
+    return state
+
+# qstate = init_state()
+# qubits = ns.qubits.create_qubits(4)
+# ns.qubits.assign_qstate(qubits,qstate)
+# print(qubits)
+# for i in range(len(qubits)):
+
+# ns.qubits.measure()
+
+
+# qa,qb,qc,qd = self.get_qubit_indices()
+# INSTR_I = instr.IInit()
+# self.apply(INSTR_I,[qa,qb,qc,qd],qubits = [q1,q2,q3,q4])
+
+
 x = np.linspace(0,1000,10)
-x1 = np.linspace(0,200,10)
+# x1 = np.linspace(0,200,10)
 y1 = 2846*x # 200:10,000 (1:50)
 y2 = 1475*x # original
 y3 = 5096*x # 50:2500 (1:50)
 y4 = 1834*x # 200:40,000 (1:200)
 
-y5 = 22004*x1 # original 8 Nodes
-y6 = 49146*x1 # 200:40000 8 Nodes
-x.reshape(1,10)
-data = np.array([np.transpose(x),np.transpose(y4)])
-# print(data)
-df = pd.DataFrame(data)
-df = df.T
-df.columns = ['list_length', 'num_rounds']
-df.to_csv('data/data4.csv', index=False)  
+# y5 = 22004*x1 # original 8 Nodes
+# y6 = 49146*x1 # 200:40000 8 Nodes
+# x.reshape(1,10)
+# data = np.array([np.transpose(x),np.transpose(y4)])
+# # print(data)
+# df = pd.DataFrame(data)
+# df = df.T
+# df.columns = ['list_length', 'num_rounds']
+# df.to_csv('data/data4.csv', index=False)  
 
 
 # print(df)
@@ -27,24 +63,24 @@ df.to_csv('data/data4.csv', index=False)
 
 # Plot 4 Nodes Protocol Throughput
 
-# fig, ax = plt.subplots()
-# plt.tick_params(direction='in')
+fig, ax = plt.subplots()
+plt.tick_params(direction='in')
 
 
-# ax.title.set_text('Protocol Scalability')
-# ax.set_xlabel('List length') 
-# ax.set_ylabel('Number of rounds', color = 'black') 
-# ax.set_title('4 Nodes Protocol Throughput')
-# ax.tick_params(axis ='y', labelcolor = 'black') 
-# ax.set_xlim([0,1000])
-# ax.set_ylim(ymin=0,ymax=3000000)
+ax.title.set_text('Protocol Scalability')
+ax.set_xlabel('List length') 
+ax.set_ylabel('Number of rounds', color = 'black') 
+ax.set_title('4 Nodes Protocol Throughput')
+ax.tick_params(axis ='y', labelcolor = 'black') 
+ax.set_xlim([0,1000])
+ax.set_ylim(ymin=0,ymax=3500000)
 
-# ax.plot(x,y3,'*-', color='green',label='CF Protocol (50,2500)')
-# ax.plot(x,y1,'^-', color='red',label='CF Protocol (200,10000)')
-# ax.plot(x,y4, 'h-',color='orange',label='CF Protocol (200,40000)')
-# ax.plot(x,y2,'s-', color='blue',label='Qudit Protocol')
-# plt.legend()
-# plt.show
+ax.plot(x,y3,'*-', color='green',label='CF Protocol (50,2500)')
+ax.plot(x,y1,'^-', color='red',label='CF Protocol (200,10000)')
+ax.plot(x,y4, 'h-',color='orange',label='CF Protocol (200,40000)')
+ax.plot(x,y2,'s-', color='blue',label='Qudit Protocol')
+plt.legend()
+plt.show
 
 # Plot protocol throughput comparison
 # fig, ax1 = plt.subplots()
